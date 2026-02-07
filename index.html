@@ -1,115 +1,124 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Be My Valentine</title>
+<meta charset="UTF-8">
+<title>Be My Valentine</title>
 
-  <style>
-    body {
-      margin: 0;
-      height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: linear-gradient(135deg, #ffd6e8, #ffeef6);
-      font-family: Arial, sans-serif;
-    }
+<style>
+  body {
+    margin: 0;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #ffd6e8, #ffeef6);
+    font-family: Arial, sans-serif;
+  }
 
-    .card {
-      background: white;
-      padding: 30px;
-      border-radius: 20px;
-      text-align: center;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.15);
-      width: 320px;
-    }
+  .card {
+    background: white;
+    padding: 30px;
+    border-radius: 20px;
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+    width: 320px;
+    position: relative; /* IMPORTANT */
+    overflow: hidden;   /* IMPORTANT */
+  }
 
-    h1 {
-      font-size: 22px;
-      margin-bottom: 10px;
-    }
+  h1 {
+    font-size: 22px;
+    margin-bottom: 10px;
+  }
 
-    img {
-      width: 100%;
-      border-radius: 15px;
-      margin: 15px 0;
-    }
+  img {
+    width: 100%;
+    border-radius: 15px;
+    margin: 15px 0;
+  }
 
-    button {
-      padding: 12px 25px;
-      border: none;
-      border-radius: 30px;
-      font-size: 16px;
-      cursor: pointer;
-      position: relative;
-    }
+  button {
+    padding: 12px 25px;
+    border: none;
+    border-radius: 30px;
+    font-size: 16px;
+    cursor: pointer;
+  }
 
-    #yes {
-      background: #ff4d79;
-      color: white;
-      margin-right: 10px;
-    }
+  #yes {
+    background: #ff4d79;
+    color: white;
+    position: absolute;   /* KEY FIX */
+    left: 50%;
+    bottom: 20px;
+    transform: translateX(-50%);
+  }
 
-    #no {
-      background: #eee;
-    }
-  </style>
+  #no {
+    background: #eee;
+    margin-top: 15px;
+  }
+</style>
 </head>
 
 <body>
 
-  <div class="card">
-    <div style="font-size:32px;">🧸</div>
+<div class="card" id="card">
+  <div style="font-size:32px;">🧸</div>
 
-    <h1>Kweeny, will you be my Valentine?</h1>
+  <h1>Kweeny, will you be my Valentine?</h1>
 
-    <!-- MEME -->
-    <img src="https://i.imgflip.com/4/30b1gx.jpg" alt="meme">
+  <img src="https://i.imgflip.com/4/30b1gx.jpg" alt="meme">
 
-    <!-- YES BUTTON (RUNS AWAY 😈) -->
-    <button
-      id="yes"
-      onmouseover="moveYes()"
-      ontouchstart="moveYes()"
-      onclick="yesClicked()">
-      Yes 💖
-    </button>
+  <!-- NO stays normal -->
+  <button id="no">No 🙈</button>
 
-    <!-- NO BUTTON (NORMAL) -->
-    <button id="no">
-      No 🙈
-    </button>
-  </div>
+  <!-- YES runs away -->
+  <button id="yes">Yes 💖</button>
+</div>
 
-  <script>
-    function moveYes() {
-      const btn = document.getElementById("yes");
-      const x = Math.random() * 200 - 100;
-      const y = Math.random() * 200 - 100;
-      btn.style.transform = `translate(${x}px, ${y}px)`;
-    }
+<script>
+  const yesBtn = document.getElementById("yes");
+  const card = document.getElementById("card");
 
-    function yesClicked() {
-      document.body.innerHTML = `
-        <div style="
-          display:flex;
-          justify-content:center;
-          align-items:center;
-          height:100vh;
-          text-align:center;
-          font-family:Arial;
-          background: linear-gradient(135deg, #ffd6e8, #ffeef6);
-        ">
-          <div>
-            <img src="https://i.imgflip.com/4/30b1gx.jpg"
-                 style="width:260px; border-radius:20px;">
-            <h1>YAYYY 💕🥰</h1>
-            <p>You finally caught it 😌❤️</p>
-          </div>
+  function moveYes() {
+    const cardRect = card.getBoundingClientRect();
+    const btnRect = yesBtn.getBoundingClientRect();
+
+    const maxX = cardRect.width - btnRect.width - 10;
+    const maxY = cardRect.height - btnRect.height - 10;
+
+    const x = Math.random() * maxX;
+    const y = Math.random() * maxY;
+
+    yesBtn.style.left = x + "px";
+    yesBtn.style.top = y + "px";
+  }
+
+  yesBtn.addEventListener("mouseover", moveYes);
+  yesBtn.addEventListener("touchstart", moveYes);
+
+  yesBtn.addEventListener("click", () => {
+    document.body.innerHTML = `
+      <div style="
+        display:flex;
+        justify-content:center;
+        align-items:center;
+        height:100vh;
+        text-align:center;
+        font-family:Arial;
+        background: linear-gradient(135deg, #ffd6e8, #ffeef6);
+      ">
+        <div>
+          <img src="https://i.imgflip.com/4/30b1gx.jpg"
+               style="width:260px; border-radius:20px;">
+          <h1>YAYYY 💕🥰</h1>
+          <p>You actually caught it 😌❤️</p>
         </div>
-      `;
-    }
-  </script>
+      </div>
+    `;
+  });
+</script>
 
 </body>
 </html>
